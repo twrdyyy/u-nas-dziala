@@ -2,8 +2,8 @@
 
 ## Backend
 
-    - [ ] uwierzytelnianie użytkowników
-    - [ ] punktacja
+    - [x] uwierzytelnianie użytkowników
+    - [x] punktacja
 
 ## Frontend
 
