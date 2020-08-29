@@ -2,10 +2,10 @@
 
 ## Backend
 
-    [ ] uwierzytelnianie użytkowników
-    [ ] punktacja
+    - [ ] uwierzytelnianie użytkowników
+    - [ ] punktacja
 
 ## Frontend
 
-    [ ] panel logowania
-    [ ] App inventor https://appinventor.mit.edu
+    - [ ] panel logowania
+    - [ ] App inventor https://appinventor.mit.edu
