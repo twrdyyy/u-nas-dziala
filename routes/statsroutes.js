@@ -2,21 +2,9 @@ const express = require('express');
 const app     = express();
 const mysql   = require('mysql');
 
-var connection = mysql.createConnection({
-   host     : 'localhost',
-   user     : 'root',
-   password : "Palonek#3",
-   database : "ecoUsers"
-});
+var sql = require('./sql_connection.js');
 
-connection.connect(function(err){
-    if(!err) {
-        console.log("Database is connected");  
-    } else {
-        console.log("Error connecting database");
-        console.log(err);  
-    }
-});
+sql.connection.connect(sql.errorHandler);
 
 exports.getPoints = async function(req,res){
     var email    = req.body.email;
