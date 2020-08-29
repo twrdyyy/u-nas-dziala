@@ -19,11 +19,24 @@ var connection = mysql.createConnection({
      }
  });
 
+ function getDistance(ride, passengerCoords){
+
+ }
+
 function getClosestDriver(params){
     
     connection.query("SELECT * FROM active_rides", function(err, results, fields){
         if (err) throw err;
-        var closestDriver;
+        var closestRide;
+
+        results.forEach(ride => {
+            if (!closestRide) closestRide = ride;
+            else{
+                distance = getDistance(ride, coords);
+
+                if (distance)
+            }
+        });
     });
     // pull all drivers from the database
     // closest driver = null
