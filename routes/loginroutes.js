@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
+
+const initialPoints = 0;
+const initialRating = 0;
+const initialRatingAmount = 0;
 
 var connection = mysql.createConnection({
    host     : 'localhost',
@@ -13,24 +16,24 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
     if(!err) {
-        console.log("Database is connected ... \n\n");  
+        console.log("Database is connected ... ");  
     } else {
-        console.log("Error connecting database ... \n\n");
+        console.log("Error connecting database ... ");
         console.log(err);  
     }
 });
 
 exports.register = async function(req,res){
   const password = req.body.password;
-  const encryptedPassword = password //await bcrypt.hash(password, saltRounds)
+  const encryptedPassword = password 
   var users={
-    "name":req.body.name,
-    "surname":req.body.surname,
-    "email":req.body.email,
-    "password":encryptedPassword,
-    "rating":0,
-    "rating_amount":0,
-    "points":0
+    "name"          :  req.body.name,
+    "surname"       :  req.body.surname,
+    "email"         :  req.body.email,
+    "password"      :  encryptedPassword,
+    "rating"        :  initialRating,
+    "rating_amount" :  initialRatingAmount,
+    "points"        :  initialPoints
    }
   
   connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
@@ -50,7 +53,7 @@ exports.register = async function(req,res){
 }
 
 exports.login = async function(req,res){
-  var email= req.body.email;
+  var email    = req.body.email;
   var password = req.body.password;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
@@ -60,8 +63,7 @@ exports.login = async function(req,res){
       })
     }else{
       if(results.length >0){
-        //const comparision = await bcrypt.compare(password, results[0].password)
-	const comparision = await (password == results[0].password)
+	    const comparision = await (password == results[0].password)
         if(comparision){
             res.send({
               "code":200,

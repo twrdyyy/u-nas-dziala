@@ -1,1 +1,1 @@
-# Hacknarök hackathon app
+# Hacknarök hackathon app 🌈⚡️

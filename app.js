@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
 var router = express.Router();
 
 router.get('/', function(req, res) {
-    res.json({ message: 'welcome to our upload module apis' });
+    res.json({ message: 'Welcome to U nas dziala! app api' });
 });
 
 router.post('/register',login.register);
