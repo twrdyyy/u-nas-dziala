@@ -1,7 +1,11 @@
 # TODO Lista
 
 ## Backend
-    - uwierzytelnianie użytkowników
+
+    [ ] uwierzytelnianie użytkowników
+    [ ] punktacja
 
 ## Frontend
-    - panel logowania
+
+    [ ] panel logowania
+    [ ] App inventor https://appinventor.mit.edu
