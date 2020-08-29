@@ -17,8 +17,13 @@
   },
   "homepage": "https://github.com/twrdyyy/u-nas-dziala#readme",
   "dependencies": {
+<<<<<<< HEAD
     "express": "^4.17.1",
     "mysql": "^2.18.1"
   },
   "devDependencies": {}
+=======
+    "express": "^4.17.1"
+  }
+>>>>>>> fceab062ba9913e6231b6a7da54c1d79598e9fbf
 }
