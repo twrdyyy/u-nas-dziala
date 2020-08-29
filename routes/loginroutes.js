@@ -1,13 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const mysql = require('mysql');
-
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.listen(port,
-    () => console.log(`app listening at http://localhost:${port}`)
-);
+const bcrypt = require('bcrypt');
 
 var connection = mysql.createConnection({
    host     : 'localhost',
@@ -28,14 +22,20 @@ connection.connect(function(err){
 
 exports.register = async function(req,res){
   const password = req.body.password;
-  const encryptedPassword = await bcrypt.hash(password, saltRounds)
+  const encryptedPassword = password //await bcrypt.hash(password, saltRounds)
   var users={
-     "email":req.body.email,
-     "password":encryptedPassword
+    "name":req.body.name,
+    "surname":req.body.surname,
+    "email":req.body.email,
+    "password":encryptedPassword,
+    "rating":0,
+    "rating_amount":0,
+    "points":0
    }
   
   connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
     if (error) {
+	console.log(error);
       res.send({
         "code":400,
         "failed":"error ocurred"
@@ -60,7 +60,8 @@ exports.login = async function(req,res){
       })
     }else{
       if(results.length >0){
-        const comparision = await bcrypt.compare(password, results[0].password)
+        //const comparision = await bcrypt.compare(password, results[0].password)
+	const comparision = await (password == results[0].password)
         if(comparision){
             res.send({
               "code":200,
