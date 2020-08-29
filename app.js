@@ -1,8 +1,8 @@
 var express    = require("express");
 var login      = require('./routes/loginroutes');
 var bodyParser = require('body-parser');
-var app = express();
-const port = 8080;
+var app        = express();
+const port     = 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
