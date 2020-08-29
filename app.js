@@ -1,9 +1,10 @@
-var express    = require("express");
-var login      = require('./routes/loginroutes');
-var userStats  = require('./routes/statsroutes');
-var bodyParser = require('body-parser');
-var app        = express();
-const port     = 8080;
+var express     = require("express");
+var login       = require('./routes/loginroutes');
+var userStats   = require('./routes/statsroutes');
+var userRouting = require('./routes/userrouting');
+var bodyParser  = require('body-parser');
+var app         = express();
+const port      = 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ router.get('/getRating', userStats.getRating);
 router.get('/getPoints', userStats.getPoints);
 router.post('/addRating', userStats.addRating);
 router.post('/addPoints', userStats.addPoints);
+router.post('/createRide', userRouting.driverRoute);
 
 router.post('/register',login.register);
 router.post('/login',login.login)
