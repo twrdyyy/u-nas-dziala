@@ -11,6 +11,9 @@ Eco friendly app to save the world 🌍
 
 #### Simple UI like UBER or BOLT 🚘
 
+Proceed to images to see some application screenshots 📸
+
 #### No cash transactions, only charity donations 🎗
 
 ### There is one simple step to save the world 🌍 
+
