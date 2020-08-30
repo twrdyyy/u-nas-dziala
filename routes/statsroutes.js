@@ -19,7 +19,7 @@ connection.connect(errorHandler = function(err){
 });
 
 exports.getPoints = async function(req,res){
-    var email    = req.body.email;
+    var email    = req.query.email;
     connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields){
         if (error) {
             res.send({
@@ -44,7 +44,7 @@ exports.getPoints = async function(req,res){
 }
 
 exports.getRating = async function(req, res) {
-    var email = req.body.email;
+    var email = req.query.email;
     connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
         if (error) {
             res.send({
