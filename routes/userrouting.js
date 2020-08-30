@@ -67,7 +67,7 @@ exports.driverRoute = async function (req, res){
     var tokenInDb;
     connection.query(`SELECT * FROM tokens WHERE token = ,${token};`, function(err, results, fields) {
         if (results == []) {
-            return res.status(403).json({status: 403, message: "Incorrect token."});
+            return res.json({status: 403, message: "Incorrect token."});
         } else tokenInDb = results[0];
     });
 
@@ -88,7 +88,7 @@ exports.driverRoute = async function (req, res){
             "${endLocation}",
             "{[]}"
         ");`, function(error, results, fields) {
-            if (error) res.send(400).json({'status': 400, 'message': 'Bad params.'});
+            if (error) res.json({'status': 400, 'message': 'Bad params. '+error});
             
             res.send(200).json({'status': 200, 'message': 'Ride created.'})
         });
@@ -106,6 +106,6 @@ exports.userRoute = async function (req, res){
     }
     
     if (!startParams.lat || !startParams.long || !startParams.lat || !startParams.long){
-        return res.status(400).json({status: 400, message: "Incorrect data format."});
+        return res.json({status: 400, message: "Incorrect data format."});
     }
 }
