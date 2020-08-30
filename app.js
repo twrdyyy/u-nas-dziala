@@ -25,11 +25,11 @@ router.post('/get-route', function(req, res) {
 
 router.get('/test', login.test);
 
-router.get('/getRating', userStats.getRating);
-router.get('/getPoints', userStats.getPoints);
-router.post('/addRating', userStats.addRating);
-router.post('/addPoints', userStats.addPoints);
-router.post('/createRide', userRouting.driverRoute);
+//router.get('/getRating', userStats.getRating);
+//router.get('/getPoints', userStats.getPoints);
+//router.post('/addRating', userStats.addRating);
+//router.post('/addPoints', userStats.addPoints);
+//router.post('/createRide', userRouting.driverRoute);
 
 
 router.post('/register',login.register);
