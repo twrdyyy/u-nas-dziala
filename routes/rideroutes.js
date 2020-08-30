@@ -34,7 +34,7 @@ exports.lookForRide = async function(req, res) {
             if(results.length > 0){
                 res.send({
                     "code":200,
-                    "success":results[0].end_location,
+                    "success":"Waiting for driver to accept",
                     "driver_id":results[0].driver_id
                 })
             }
@@ -84,6 +84,33 @@ exports.acceptRide = async function(req, res) {
         }
     });
 }
+
+exports.lookForPassenger = async function(req, res) {
+    var driverID = req.body.driver_id;
+
+    connection.query(`SELECT * FROM active_rides WHERE driver_id="${driverID}"`,[], async function (error, results, fields) {
+        if (error) {
+            res.send({
+                "code":400,
+                "failed":"error ocurred"
+            })
+        } else {
+            if(results.passengers == ""){
+                res.send({
+                    "code":202,
+                    "success":"No new passengers",
+                })
+            }
+            else{
+                res.send({
+                   "code":200,
+                   "success":results.passengers
+              })
+            }
+        }
+    });
+}
+
 
 exports.checkRide = async function(req, res) {
     var driverID = req.query.driver_id;

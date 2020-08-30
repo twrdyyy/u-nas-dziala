@@ -2,7 +2,7 @@ var express     = require("express");
 var login       = require('./routes/loginroutes');
 var userStats   = require('./routes/statsroutes');
 var userRouting = require('./routes/userrouting');
-var ride        = require('./routes/ride');
+var ride        = require('./routes/rideroutes');
 var bodyParser  = require('body-parser');
 var app         = express();
 const port      = 8080;
@@ -36,6 +36,7 @@ router.post('/createRide', userRouting.driverRoute);
 router.post('/lookForRide', ride.lookForRide);
 router.post('/askForRide', ride.askForRide);
 router.post('/acceptRide', ride.acceptRide);
+router.post('/lookForPassenger', ride.lookForPassenger);
 router.get('/checkRide', ride.checkRide);
 
 router.post('/register',login.register);
