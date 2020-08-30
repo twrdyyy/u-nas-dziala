@@ -1,11 +1,22 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const e = require('express');
 
-var sql = require('./sql_connection.js');
+var connection = mysql.createConnection({
+   host     : 'localhost',
+   user     : '12984_u_nas_dzial',
+   password : 'Palonek#3',
+   database : '12984_u_nas_dzial'
+});
 
-sql.connection.connect(sql.errorHandler);
+connection.connect(errorHandler = function(err){
+    if(!err) {
+        console.log("Database is connected ... ");  
+    } else {
+        console.log("Error connecting database ... ");
+        console.log(err);  
+    }
+});
 
  function getDistance(ride, passengerCoords){
 
