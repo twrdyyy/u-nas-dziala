@@ -81,18 +81,10 @@ exports.addPoints = async function(req, res) {
                 "failed":"error ocurred"
             })
         } else {
-            if(results.length >0){
-                res.send({
-                    "code":200,
-                    "success":"Points updated successfully"
-                })
-            }
-            else{
-                res.send({
-                   "code":204,
-                   "success":"There is no such user"  + email
-              })
-            }
+            res.send({
+                "code":200,
+                "success":"Points updated successfully"
+            })
         }
     });
 }
@@ -100,7 +92,7 @@ exports.addPoints = async function(req, res) {
 exports.addRating = async function(req, res) {
     const email = req.body.email;
     const rating = req.body.rating;
-    connection.query(`UPDATE users SET ratingNum = ratingNum + 1, ratingPoints = ratingPoints + ${rating} WHERE email = ? `
+    connection.query(`UPDATE users SET rating_amount = rating_amount + 1, rating = rating + ${rating} WHERE email = ? `
         , [email]
         , async function (error, results, fields) {
         if (error) {
@@ -109,18 +101,10 @@ exports.addRating = async function(req, res) {
                 "failed":"error ocurred"
             })
         } else {
-            if(results.length >0){
-                res.send({
-                    "code":200,
-                    "success":"Rating added successfully"
-                })
-            }
-            else{
-                res.send({
-                   "code":204,
-                   "success":"There is no such user"
-              })
-            }
+            res.send({
+                "code":200,
+                "success":"Rating added successfully"
+            })
         }
     });
 }
