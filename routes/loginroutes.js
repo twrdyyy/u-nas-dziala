@@ -10,6 +10,21 @@ var sql = require('./sql_connection.js');
 
 sql.connection.connect(sql.errorHandler);
 
+exports.test = async function(req, res){
+  connection.query('SELECT * FROM users',[], async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred"
+      })
+    }else{
+        res.send({
+            "elo":"dupa"
+        })
+    }
+    });
+}
+
 exports.register = async function(req,res){
   const password = req.body.password;
   const encryptedPassword = password 
@@ -39,52 +54,37 @@ exports.register = async function(req,res){
   });
 }
 
-
 exports.login = async function(req,res){
-  connection.query('SELECT * FROM users',[], async function (error, results, fields) {
+  var email    = req.body.email;
+  var password = req.body.password;
+  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
         "code":400,
         "failed":"error ocurred"
       })
     }else{
-        res.send({
-            "kutas":"chuj"
-            });
+      if(results.length >0){
+	    const comparision = (password == results[0].password)
+        if(comparision){
+            res.send({
+              "code":200,
+              "success":"login sucessfull"
+            })
         }
+        else{
+          res.send({
+               "code":204,
+               "success":"Email and password does not match"
+          })
+        }
+      }
+      else{
+        res.send({
+          "code":206,
+          "success":"Email does not exits"
+            });
+      }
+    }
     });
-
-//exports.login = async function(req,res){
-//  var email    = req.body.email;
-//  var password = req.body.password;
-//  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
-//    if (error) {
-//      res.send({
-//        "code":400,
-//        "failed":"error ocurred"
-//      })
-//    }else{
-//      if(results.length >0){
-//	    const comparision = await (password == results[0].password)
-//        if(comparision){
-//            res.send({
-//              "code":200,
-//              "success":"login sucessfull"
-//            })
-//        }
-//        else{
-//          res.send({
-//               "code":204,
-//               "success":"Email and password does not match"
-//          })
-//        }
-//      }
-//      else{
-//        res.send({
-//          "code":206,
-//          "success":"Email does not exits"
-//            });
-//      }
-//    }
-//    });
-//}
+}
