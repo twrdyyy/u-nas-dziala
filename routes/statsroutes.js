@@ -90,7 +90,7 @@ exports.addPoints = async function(req, res) {
             else{
                 res.send({
                    "code":204,
-                   "success":"There is no such user" 
+                   "success":"There is no such user"  + email
               })
             }
         }
