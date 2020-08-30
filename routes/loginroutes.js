@@ -10,7 +10,7 @@ var sql = require('./sql_connection.js');
 
 sql.connection.connect(sql.errorHandler);
 
-exports.test = async function(req, res){
+exports.test = function(req, res){
   connection.query('SELECT * FROM users',[], async function (error, results, fields) {
     if (error) {
       res.send({
