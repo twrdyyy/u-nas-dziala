@@ -71,32 +71,33 @@ exports.driverRoute = async function (req, res){
             res.send({code: 403, message: "Incorrect token."});
         } else {
             tokenInDb = results[0];
-            res.send({'code': 200, 'message': tokenInDb});
+            //res.send({'code': 200, 'message': tokenInDb});
+
+            connection.query(`INSERT INTO active_rides(
+                    "driver_id", 
+                    "passengers", 
+                    "departure_time", 
+                    "max_passengers", 
+                    "start_location", 
+                    "end_location", 
+                    "stops") 
+                VALUES ("
+                    ${tokenInDb.user_id},
+                    "{[]}",
+                    "${departureTime}",
+                    ${maxPassengers},
+                    "${startLocation}",
+                    "${endLocation}",
+                    "{[]}"
+                ");`, function(error, results, fields) {
+                    if (error) res.send({'code': 400, 'message': 'Bad params. '+error});
+                    
+                    res.send({'code': 200, 'message': 'Ride created.'})
+                });
         } 
             
     });
 
-    connection.query(`INSERT INTO active_rides(
-            "driver_id", 
-            "passengers", 
-            "departure_time", 
-            "max_passengers", 
-            "start_location", 
-            "end_location", 
-            "stops") 
-        VALUES ("
-            ${tokenInDb.user_id},
-            "{[]}",
-            "${departureTime}",
-            ${maxPassengers},
-            "${startLocation}",
-            "${endLocation}",
-            "{[]}"
-        ");`, function(error, results, fields) {
-            if (error) res.send({'code': 400, 'message': 'Bad params. '+error});
-            
-            res.send({'code': 200, 'message': 'Ride created.'})
-        });
 }
 
 exports.userRoute = async function (req, res){
