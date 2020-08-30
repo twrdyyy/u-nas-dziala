@@ -2,6 +2,7 @@ var express     = require("express");
 var login       = require('./routes/loginroutes');
 var userStats   = require('./routes/statsroutes');
 var userRouting = require('./routes/userrouting');
+var ride        = require('./routes/ride');
 var bodyParser  = require('body-parser');
 var app         = express();
 const port      = 8080;
@@ -25,12 +26,17 @@ router.post('/get-route', function(req, res) {
 
 router.get('/test', login.test);
 
-router.get('/getRating', userStats.getRating);
 router.get('/getPoints', userStats.getPoints);
-router.post('/addRating', userStats.addRating);
 router.post('/addPoints', userStats.addPoints);
-router.post('/createRide', userRouting.driverRoute);
 
+router.get('/getRating', userStats.getRating);
+router.post('/addRating', userStats.addRating);
+
+router.post('/createRide', userRouting.driverRoute);
+router.post('/lookForRide', ride.lookForRide);
+router.post('/askForRide', ride.askForRide);
+router.post('/acceptRide', ride.acceptRide);
+router.get('/checkRide', ride.checkRide);
 
 router.post('/register',login.register);
 router.post('/login',login.login)
