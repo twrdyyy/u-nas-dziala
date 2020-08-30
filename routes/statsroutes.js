@@ -27,7 +27,7 @@ exports.getPoints = async function(req,res){
                 "failed":"error ocurred"
             })
         }else{
-            if(results.length >0){
+            if(results.length > 0){
                 res.send({
                     "code":200,
                     "success":results[0].points
@@ -36,7 +36,7 @@ exports.getPoints = async function(req,res){
             else{
                 res.send({
                    "code":204,
-                   "success":"There is no such user"
+                   "success":"There is no such user" + email
               })
             }
         }
@@ -52,7 +52,7 @@ exports.getRating = async function(req, res) {
                 "failed":"error ocurred"
             })
         } else {
-            if(results.length >0){
+            if(results.length > 0){
                 const ratingPoints = results[0].rating;
                 const ratingNum = results[0].rating_amount;
                 const rating = (ratingPoints / ratingNum).toString();
@@ -64,7 +64,7 @@ exports.getRating = async function(req, res) {
             else{
                 res.send({
                    "code":204,
-                   "success":"There is no such user"
+                   "success":"There is no such user" + email
               })
             }
         }
@@ -74,7 +74,7 @@ exports.getRating = async function(req, res) {
 exports.addPoints = async function(req, res) {
     const email = req.body.email;
     const points = req.body.points;
-    connection.query(`UPDATE users SET points = points + ${points} WHERE email = ${email} `, [], async function (error, results, fields) {
+    connection.query(`UPDATE users SET points = points + ${points} WHERE email="${email}"`, [], async function (error, results, fields) {
         if (error) {
             res.send({
                 "code":400,
@@ -90,7 +90,7 @@ exports.addPoints = async function(req, res) {
             else{
                 res.send({
                    "code":204,
-                   "success":"There is no such user"
+                   "success":"There is no such user" 
               })
             }
         }
