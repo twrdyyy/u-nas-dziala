@@ -54,16 +54,6 @@ function getClosestRide(params){
 }
 
 exports.driverRoute = async function (req, res){
-    const startParams = {
-        lat: req.body.startLat,
-        long: req.body.startLong
-    }
-
-    const endParams = {
-        lat: req.body.endLat,
-        long: req.body.endLong
-    }
-    
     const departureTime = req.body.departureTime;
     const token = req.body.token;
     const maxPassengers = req.body.maxPassengers;
@@ -98,9 +88,9 @@ exports.driverRoute = async function (req, res){
             "${endLocation}",
             "{[]}"
         ");`, function(error, results, fields) {
-            if (error) return res.status(400).json({'status': 400, 'message': 'Bad params.'});
+            if (error) res.send(400).json({'status': 400, 'message': 'Bad params.'});
             
-            return res.status(200).json({'status': 200, 'message': 'Ride created.'})
+            res.send(200).json({'status': 200, 'message': 'Ride created.'})
         });
 }
 
