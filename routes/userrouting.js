@@ -69,7 +69,11 @@ exports.driverRoute = async function (req, res){
         if (err) res.send({code: 400, message: err});
         if (results == []) {
             res.send({code: 403, message: "Incorrect token."});
-        } else tokenInDb = results[0];
+        } else {
+            tokenInDb = results[0];
+            res.send({'code': 200, 'message': tokenInDb});
+        } 
+            
     });
 
     connection.query(`INSERT INTO active_rides(
