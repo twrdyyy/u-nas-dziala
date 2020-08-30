@@ -73,8 +73,8 @@ exports.driverRoute = async function (req, res){
             tokenInDb = results[0];
             //res.send({'code': 200, 'message': tokenInDb});
 
-            connection.query(`INSERT INTO active_rides(
-                    "driver_id", "passengers", "departure_time", "max_passengers", "start_location", "end_location", "stops") VALUES ("
+            connection.query(`INSERT INTO active_rides (
+                    driver_id, passengers, departure_time, max_passengers, start_location, end_location, stops) VALUES (
                     ${tokenInDb.user_id},
                     "{[]}",
                     "${departureTime}",
