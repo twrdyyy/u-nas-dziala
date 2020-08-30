@@ -65,7 +65,7 @@ exports.driverRoute = async function (req, res){
     // }
 
     var tokenInDb;
-    connection.query(`SELECT * FROM tokens WHERE token = ${token};`, function(err, results, fields) {
+    connection.query(`SELECT * FROM tokens WHERE token = "${token}";`, function(err, results, fields) {
         if (err) res.send({code: 400, message: err});
         if (results == []) {
             res.send({code: 403, message: "Incorrect token."});
