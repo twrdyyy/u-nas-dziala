@@ -31,7 +31,7 @@ exports.test = function(req, res){
       })
     }else{
         res.send({
-            "elo":"dupa"
+            "elo":results
         })
     }
     });
