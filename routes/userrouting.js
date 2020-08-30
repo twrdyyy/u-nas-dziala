@@ -82,7 +82,7 @@ exports.driverRoute = async function (req, res){
                     "${startLocation}",
                     "${endLocation}",
                     "{[]}"
-                ");`, function(error, results, fields) {
+                );`, function(error, results, fields) {
                     if (error) res.send({'code': 400, 'message': 'Bad params. '+error});
                     
                     res.send({'code': 200, 'message': 'Ride created.'})
