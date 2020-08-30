@@ -55,10 +55,10 @@ exports.getRating = async function(req, res) {
             if(results.length > 0){
                 const ratingPoints = results[0].rating;
                 const ratingNum = results[0].rating_amount;
-                const rating = (ratingPoints / ratingNum).toString();
+                const rating = (ratingPoints / ratingNum).toString() || 0;
                 res.send({
                     "code":200,
-                    "success":rating
+                    "success": rating
                 })
             }
             else{
@@ -74,7 +74,7 @@ exports.getRating = async function(req, res) {
 exports.addPoints = async function(req, res) {
     const email = req.body.email;
     const points = req.body.points;
-    connection.query(`UPDATE users SET points = points + ${points} WHERE email="${email}"`, [], async function (error, results, fields) {
+    connection.query(`UPDATE users SET points = points + ${points} WHERE email = ? `, [email], async function (error, results, fields) {
         if (error) {
             res.send({
                 "code":400,
@@ -100,8 +100,8 @@ exports.addPoints = async function(req, res) {
 exports.addRating = async function(req, res) {
     const email = req.body.email;
     const rating = req.body.rating;
-    connection.query(`UPDATE users SET ratingNum = ratingNum + 1, ratingPoints = ratingPoints + ${rating} WHERE email = ${email}`
-        , []
+    connection.query(`UPDATE users SET ratingNum = ratingNum + 1, ratingPoints = ratingPoints + ${rating} WHERE email = ? `
+        , [email]
         , async function (error, results, fields) {
         if (error) {
             res.send({
