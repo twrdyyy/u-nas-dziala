@@ -1,5 +1,4 @@
 const express = require('express');
-const app     = express();
 const mysql   = require('mysql');
 
 var connection = mysql.createConnection({
@@ -19,10 +18,10 @@ connection.connect(errorHandler = function(err){
 });
 
 exports.lookForRide = async function(req, res) {
-    var lonStart = req.body.lonStart;
-    var latStart = req.body.latStart; 
-    var lonEnd = req.body.lonEnd;
-    var latEnd = req.body.latEnd; 
+    //var lonStart = req.body.lonStart;
+    //var latStart = req.body.latStart;
+    //var lonEnd = req.body.lonEnd;
+    //var latEnd = req.body.latEnd;
     
     connection.query('SELECT * FROM active_rides WHERE passengers=""',[], async function (error, results, fields){
         if (error) {
@@ -52,7 +51,7 @@ exports.askForRide = async function(req, res) {
     var driverID = req.body.driver_id;
     var userID = req.body.user_id;
 
-    connection.query(`UPDATE active_rides SET passengers=${userID} where driver_id="${driverID}"`,[], async function (error, results, fields) {
+    connection.query(`UPDATE active_rides SET passengers="${userID}" where driver_id="${driverID}"`, function (error, results, fields) {
         if (error) {
             res.send({
                 "code":400,
@@ -95,17 +94,17 @@ exports.lookForPassenger = async function(req, res) {
                 "failed":"error ocurred"
             })
         } else {
-            if(results.passengers == ""){
+            if(results.passengers){
                 res.send({
-                    "code":202,
-                    "success":"No new passengers",
+                    "code":200,
+                   "success":results.passengers
                 })
             }
             else{
                 res.send({
-                   "code":200,
-                   "success":results.passengers
-              })
+                    "code":202,
+                    "success":"No new passengers",
+                })
             }
         }
     });
@@ -125,7 +124,7 @@ exports.checkRide = async function(req, res) {
             if(results.length > 0){
                 res.send({
                     "code":200,
-                    "success":results[0].end_location,
+                    "success":"Driver has accepted the ride",
                 })
             }
             else{
@@ -137,5 +136,4 @@ exports.checkRide = async function(req, res) {
         }
     });
 }
-
 

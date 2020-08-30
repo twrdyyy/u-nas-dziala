@@ -33,6 +33,7 @@ router.get('/getRating', userStats.getRating);
 router.post('/addRating', userStats.addRating);
 
 router.post('/createRide', userRouting.driverRoute);
+router.post('/getRoute', userRouting.getRoute);
 router.post('/lookForRide', ride.lookForRide);
 router.post('/askForRide', ride.askForRide);
 router.post('/acceptRide', ride.acceptRide);

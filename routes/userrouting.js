@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const request = require('request');
+const axios = require('axios');
+const { response } = require('express');
 
 var connection = mysql.createConnection({
    host     : 'localhost',
@@ -58,11 +59,13 @@ exports.driverRoute = async function (req, res){
     const departureTime = req.body.departureTime;
     const token = req.body.token;
     const maxPassengers = req.body.maxPassengers;
-    const startLocation = JSON.encode(req.body.startLocation);
-    const endLocation = JSON.encode(req.body.endLocation);
+    //const startLocation = {lat: "50.068871", long: "19.918272"};
+    const startLocation = req.body.startLocation;
+    //const endLocation = {lat: "50.067067", long: "19.930557"};
+    const endLocation = req.body.endLocation;
 
     var tokenInDb;
-    
+    //res.send({'code': 200, 'message': `https://api.tomtom.com/routing/1/calculateRoute/${startLocation.lat}%2C${startLocation.long}%3A${endLocation.lat}%2C${endLocation.long}/json?avoid=unpavedRoads&key=YoQ1hOJcdkXaLdxTfEexOAzTmm4GElrw`});
     connection.query(`SELECT * FROM tokens WHERE token = "${token}";`, function(err, results, fields) {
         if (err) res.send({code: 400, message: err});
         if (results == []) {
@@ -71,27 +74,41 @@ exports.driverRoute = async function (req, res){
             tokenInDb = results[0];
             //res.send({'code': 200, 'message': tokenInDb});
             var points;
-            request(`https://api.tomtom.com/routing/1/calculateRoute/${startLocation.lat}%2C${startLocation.long}%3A${endLocation.lat}%2C${endLocation.long}/json?avoid=unpavedRoads&key=YoQ1hOJcdkXaLdxTfEexOAzTmm4GElrw`, { json: true }, (err, res, body) => {
-                if (err) res.send({code: 400, message: err});
-                points = body.routes[0].legs[0].points;
-                
-                connection.query(`INSERT INTO active_rides (
-                        driver_id, passengers, departure_time, max_passengers, start_location, end_location, stops) VALUES (
+            //res.send({'code': 200, 'message': 'https://api.tomtom.com/routing/1/calculateRoute/${startLocation.lat}%2C${startLocation.long}%3A${endLocation.lat}%2C${endLocation.long}/json?avoid=unpavedRoads&key=YoQ1hOJcdkXaLdxTfEexOAzTmm4GElrw'});
+            axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${startLocation.lat}%2C${startLocation.long}%3A${endLocation.lat}%2C${endLocation.long}/json?avoid=unpavedRoads&key=YoQ1hOJcdkXaLdxTfEexOAzTmm4GElrw`)
+                .then((response) => {
+                    points = response.data.routes[0].legs[0].points;
+                    //res.send({'code': 200, 'points': points});
+                    var query  = `INSERT INTO active_rides (
+                        driver_id, passengers, departure_time, max_passengers, start_location, end_location, stops, accepted) VALUES (
                         ${tokenInDb.user_id},
-                        "{[]}",
+                        "",
                         "${departureTime}",
                         ${maxPassengers},
-                        "${startLocation}",
-                        "${endLocation}",
-                        "${JSON.stringify(points)}"
-                    );`, function(error, results, fields) {
-                        if (error) res.send({'code': 400, 'message': 'Bad params. '+error});
+                        "${connection.escape(JSON.stringify(startLocation))}",
+                        "${connection.escape(JSON.stringify(endLocation))}",
+                        "${connection.escape(JSON.stringify(points))}",
+                        false
+                    );`
+                    connection.query(query, function(error, results, fields) {
+                        if (error) res.send({'code': 400, 'message': error});
                         
-                        res.send({'code': 200, 'message': 'Ride created.'})
+                        res.send({'code': 200, 'points': points});
                     }
                 );
             });
         } 
+    });
+}
+
+exports.getRoute = async function (req, res) {
+    const startLocation = req.body.startLocation;
+    const endLocation = req.body.endLocation;
+
+    axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${startLocation.lat}%2C${startLocation.long}%3A${endLocation.lat}%2C${endLocation.long}/json?avoid=unpavedRoads&key=YoQ1hOJcdkXaLdxTfEexOAzTmm4GElrw`)
+        .then((response) => {
+                points = response.data.routes[0].legs[0].points;    
+                res.send({'code': 200, 'points': points});
     });
 
 }
